@@ -1,0 +1,23 @@
+{
+  "name": "billomat.openapi3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theolymp/Billomat.Swagger.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/theolymp/Billomat.Swagger/issues"
+  },
+  "homepage": "https://github.com/theolymp/Billomat.Swagger#readme",
+  "devDependencies": {
+    "gulp": "^4.0.1",
+    "gulp-yaml-include": "^0.3.0"
+  }
+}
