@@ -1,0 +1,5 @@
+{
+    "yaml.trace.server": "messages",
+    "yaml.format.singleQuote": true,
+    "yaml.customTags": ["!!include", "tag:yaml.org,2002:include"]
+}

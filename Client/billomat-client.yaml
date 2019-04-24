@@ -39,18 +39,11 @@ servers:
 paths:
   '/clients':
     parameters:
-      - $ref: '#/components/parameters/language'
-      - $ref: '#/components/parameters/formatHeader'
-      - $ref: '#/components/parameters/formatQuery'
-      - $ref: '#/components/parameters/appId'
-      - $ref: '#/components/parameters/appSecret'
+      !!include common/globalPathParameters.yaml
     get:
       description: >
         List all clients
-      parameters:
-        - $ref: '#/components/parameters/orderBy'
-        - $ref: '#/components/parameters/page'
-        - $ref: '#/components/parameters/limitPage'
+      parameters: 
         - name: name
           in: query
           required: false
@@ -119,6 +112,7 @@ paths:
               type: string
           style: form
           explode: false
+        !!include  common/globalPathParametersList.yaml
       tags: [Client]
       operationId: getClients
       security: 

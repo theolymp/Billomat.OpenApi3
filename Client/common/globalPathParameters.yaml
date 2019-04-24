@@ -1,0 +1,5 @@
+- $ref: '#/components/parameters/language'
+- $ref: '#/components/parameters/formatHeader'
+- $ref: '#/components/parameters/formatQuery'
+- $ref: '#/components/parameters/appId'
+- $ref: '#/components/parameters/appSecret'
