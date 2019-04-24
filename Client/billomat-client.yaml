@@ -1,0 +1,666 @@
+openapi: '3.0.0'
+info:
+  title: 'Billomat Billing-& Accounting API'
+  description: >-
+    The billomat[API] is an open data and programming interface which enables you to access the data in your Billomat account via HTTP and XML/JSON. With this, online and desktop applications can be created which seamlessly integrate into your Billomat account
+  termsOfService: https://www.billomat.com/en/terms/
+  contact:
+    name: the olymp - technology & compliance consulting
+    url: https://www.theolymp.net
+    email: info@theolymp.net
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: '1'
+
+
+
+x-parameters:
+  DefaultResponseIsError: &DefaultResponseIsError
+    'default':
+      $ref: '#/components/responses/error'
+  
+  
+# -------------------- SERVERS 
+servers:
+  - description: the olymp - dev demo
+    url: https://theolympdev01.billomat.net/api
+  - description: Public billomat.net endpoint
+    url: https://{billomatInstance}.billomat.net/api
+    variables:
+      billomatInstance:
+        default: demo
+        description: Your instance ID
+
+
+
+
+# -------------------- PATHS 
+paths:
+  '/clients':
+    parameters:
+      - $ref: '#/components/parameters/language'
+      - $ref: '#/components/parameters/formatHeader'
+      - $ref: '#/components/parameters/formatQuery'
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/appSecret'
+    get:
+      description: >
+        List all clients
+      parameters:
+        - $ref: '#/components/parameters/orderBy'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/limitPage'
+        - name: name
+          in: query
+          required: false
+          description: The list can be filtered with Company name
+          schema: 
+            type: string
+        - name: client_number
+          in: query        
+          required: false
+          description: The list can be filtered with Client number
+          schema: 
+            type: integer
+            format: int64
+        - name: email
+          in: query        
+          required: false
+          description: The list can be filtered with e-mail address
+          schema: 
+            type: string
+            format: email
+        - name: first_name
+          in: query        
+          required: false
+          description: The list can be filtered with First name of the contact person
+          schema: 
+            type: string
+        - name: last_name
+          in: query        
+          required: false
+          description: The list can be filtered with Last name of the contact person
+          schema: 
+            type: string
+        - name: country_code
+          in: query        
+          required: false
+          description: The list can be filtered with Last name of the contact person
+          schema: 
+            $ref: '#/components/schemas/CountryCodeType'
+        - name: note
+          in: query        
+          required: false
+          description: The list can be filtered with note
+          schema: 
+            type: string
+
+        - name: invoice_id
+          in: query
+          description: >
+            The list can be filtered with ID of an invoice of this client, 
+            multiple values seperated with commas
+          schema: 
+            type: array
+            items:
+              type: integer
+              format: int64
+          style: form
+          explode: false
+            
+        - name: tags
+          in: query        
+          required: false
+          description: The list can be filtered with Comma seperated list of tags
+          schema: 
+            type: array
+            items:
+              type: string
+          style: form
+          explode: false
+      tags: [Client]
+      operationId: getClients
+      security: 
+        - authHeader: []
+        - authGet: []
+      responses:
+        200:
+          description:
+            List of clients
+          content:
+            'application/xml':
+              schema:
+                description: List of clients
+                type: array
+                xml: 
+                  name: clients
+                  wrapped: true
+                items:
+                  $ref: '#/components/schemas/Client'
+            'application/json':
+              schema:
+                description: List of clients
+                type: object
+                properties:
+                  clients:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Client'
+  #  post:
+  #    tags: [Client]
+  #    operationId: createClient
+  #    security: 
+  #    - authHeader: []
+  #    - authGet: []
+
+  '/clients/{id}':
+    parameters:
+      - $ref: '#/components/parameters/language'
+      - $ref: '#/components/parameters/formatHeader'
+      - $ref: '#/components/parameters/formatQuery'
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          oneOf:
+            - type: integer
+              description: Client id
+            - type: string
+              enum: ['myself']
+              description: Your own account info
+          default: 'myself'
+    get:
+      tags: [Client]
+      operationId: getClientById
+      security: 
+        - authHeader: []
+        - authGet: []
+      responses:
+        200:
+          description: Information about current client
+          content:
+            'application/xml':
+              schema:
+                $ref: '#/components/schemas/Client'
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  client:
+                    $ref: '#/components/schemas/Client'
+           
+        <<: *DefaultResponseIsError
+          
+
+
+
+
+
+
+
+
+
+
+  '/articles':
+    parameters:
+      - $ref: '#/components/parameters/language'
+      - $ref: '#/components/parameters/formatHeader'
+      - $ref: '#/components/parameters/formatQuery'
+      - in: query
+        name: article_number
+        required: false
+        schema:
+          type: string
+        description: 'Filter by: article number'
+      - in: query
+        name: title
+        required: false
+        schema:
+          type: string
+        description: 'Filter by: title'
+      - in: query
+        name: description
+        required: false
+        schema:
+          type: string
+        description: 'Filter by: description'
+      - in: query
+        name: currency_code
+        required: false
+        schema:
+          $ref: '#/components/schemas/CurrencyCodeType'
+        description: 'Filter by: currency code'
+      - in: query
+        name: unit_id
+        required: false
+        schema:
+          type: integer
+          format: int64
+        description: 'Filter by: unit id'
+      - in: query
+        name: tags
+        required: false
+        schema: 
+          type: array
+          items:
+            type: string
+        style: form
+        explode: false
+      - in: query
+        name: supplier_id
+        required: false
+        schema:
+          type: integer
+          format: int64
+      
+    get:
+      tags: [Article]
+      operationId: getArticles
+      security: 
+        - authHeader: []
+        - authGet: []
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/limitPage'
+        - $ref: '#/components/parameters/orderBy'
+      responses:
+        200:
+          description: List of articles
+          content:
+            'application/xml':
+              schema:
+                $ref: '#/components/schemas/Article'
+            'application/json':
+              schema:
+                type: object
+                properties:
+                  articles:
+                    $ref: '#/components/schemas/Article'
+        <<: *DefaultResponseIsError
+        
+        
+        
+    head:
+      tags: [Article]
+      operationId: getArticlesCount
+      security: 
+        - authHeader: []
+        - authGet: []
+      responses:
+        200: 
+          $ref: '#/components/responses/headCount'
+        <<: *DefaultResponseIsError
+
+
+
+
+
+# -------------------- COMPONENTS                
+components:
+  ## ----------------- SECURITY SCHEMAS
+  securitySchemes:
+    authHeader:
+      type: apiKey
+      description: ApiKey in HTTP-header
+      name: X-BillomatApiKey
+      in: header
+    authGet:
+      type: apiKey
+      description: ApiKey in HTTP-header
+      name: api_key
+      in: query
+  ## ----------------- PARAMETERS
+  parameters:
+    language:
+      in: header
+      name: Accept-Language
+      required: false
+      schema:
+        $ref: '#/components/schemas/LanguageCodeType'
+      description: Language
+    formatHeader:
+      in: header
+      name: Accept
+      required: false
+      schema: 
+        type: string
+        enum: ['application/json', 'application/xml']
+        default: 'application/json'
+    formatQuery:
+      in: query
+      name: format
+      required: false
+      schema:
+        type: string
+        enum: ['json', 'xml']
+        default: json
+    page:
+      in: query
+      name: page
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number
+    limitPage:
+      in: query
+      name: per_page
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 100
+      description: Items per page
+
+    orderBy:
+      in: query
+      name: order_by
+      required: false
+      description: Order by filter
+      schema:
+        type: array
+        items:
+          type: string
+          pattern: '^(\w+ (ASC|DESC))$'
+      style: form
+      explode: false
+      
+      
+    appId:
+      in: header
+      name: X-AppId
+      required: false
+      description: App Id
+      schema: 
+        type: integer
+        format: int64
+    
+    appSecret:
+      in: header
+      name: X-AppSecret
+      required: false
+      description: App Secret
+      schema: 
+        type: string
+      
+
+      
+      
+  ## ----------------- RESPONSES
+  responses:
+    headCount:
+      description: HEAD request gives total item count
+      headers:
+        count:
+          description: Total count
+          required: true
+          style: simple
+          schema:
+            type: integer
+            minimum: 0
+    
+    error:
+      description: Error
+      content:
+        'application/xml':
+          schema:
+            type: object
+            xml:
+              name: errors
+              wrapped: true
+            properties:
+              error:
+                $ref: '#/components/schemas/Error'
+        'application/json':
+          schema:
+            type: object
+            properties:
+              errors:
+                type: object
+                properties:
+                  error:
+                    $ref: '#/components/schemas/Error'
+  ## ----------------- SCHEMAS
+  schemas:
+    Error: 
+      type: string
+      xml:
+        name: error
+      
+    CurrencyCodeType:
+      type: string
+      enum: ['AED','AFN','ALL','AMD','ANG','AOA','ARS','AUD','AWG','AZN','BAM','BBD','BDT','BGN','BHD','BIF','BMD','BND','BOB','BRL','BSD','BTN','BWP','BYR','BZD','CAD','CDF','CHF','CLP','CNY','COP','CRC','CUP','CVE','CZK','DJF','DKK','DOP','DZD','ECS','EEK','EGP','ETB','EUR','FJD','FKP','GBP','GEL','GGP','GHS','GIP','GMD','GNF','GTQ','GYD','HKD','HNL','HRK','HTG','HUF','IDR','ILS','IMP','INR','IQD','IRR','ISK','JEP','JMD','JOD','JPY','KES','KGS','KHR','KMF','KPW','KRW','KWD','KYD','KZT','LAK','LBP','LKR','LRD','LSL','LTL','LVL','LYD','MAD','MDL','MKD','MGA','MMK','MNK','MNT','MOP','MRO','MUR','MVR','MWK','MXN','MYR','MZN','NAD','NGN','NIO','NOK','NPR','NZD','OMR','PAB','PEN','PGK','PHP','PKR','PLN','PYG','QAR','RON','RSD','RUB','RWF','SAR','SBD','SCR','SDG','SEK','SGD','SHP','SLL','SOS','SRD','STD','SVC','SYP','SZL','THB','TJS','TMM','TND','TOP','TRY','TTD','TVD','TWD','TZS','UAH','UGX','USD','UYU','UZS','VEF','VND','VUV','WST','XAF','XCD','XOF','XPF','YER','ZAR','ZMW','ZWD']
+    LanguageCodeType:
+      type: string
+      enum: ['af','sq','ar-dz','ar-bh','ar-eg','ar-iq','ar-jo','ar-kw','ar-lb','ar-ly','ar-ma','ar-om','ar-qa','ar-sa','ar-sy','ar-tn','ar-ae','ar-ye','eu','be','bg','ca','zh-hk','zh-cn','zh-sg','zh-tw','hr','cs','da','nl-be','nl','en','en-au','en-bz','en-ca','en-ie','en-jm','en-nz','en-za','en-tt','en-gb','en-us','et','fo','fa','fi','fr-be','fr-ca','fr-lu','fr','fr-ch','gd','de-at','de-li','de-lu','de','de-ch','el','he','hi','hu','is','id','ga','it','it-ch','ja','ko','ku','lv','lt','mk','ml','ms','mt','no','nb','nn','pl','pt-br','pt','pa','rm','ro','ro-md','ru','ru-md','sr','sk','sl','sb','es-ar','es-bo','es-cl','es-co','es-cr','es-do','es-ec','es-sv','es-gt','es-hn','es-mx','es-ni','es-pa','es-py','es-pe','es-pr','es','es-uy','es-ve','sv','sv-fi','th','ts','tn','tr','uk','ur','ve','vi','cy','xh','ji','zu']
+    CountryCodeType:
+      type: string
+      enum: ['AD','AE','AF','AG','AI','AL','AM','AO','AQ','AR','AS','AT','AU','AW','AX','AZ','BA','BB','BD','BE','BF','BG','BH','BI','BJ','BL','BM','BN','BO','BQ','BR','BS','BT','BV','BW','BY','BZ','CA','CC','CD','CF','CG','CH','CI','CK','CL','CM','CN','CO','CR','CU','CV','CW','CX','CY','CZ','DE','DJ','DK','DM','DO','DZ','EC','EE','EG','EH','ER','ES','ET','FI','FJ','FK','FM','FO','FR','GA','GB','GD','GE','GF','GG','GH','GI','GL','GM','GN','GP','GQ','GR','GS','GT','GU','GW','GY','HK','HM','HN','HR','HT','HU','ID','IE','IL','IM','IN','IO','IQ','IR','IS','IT','JE','JM','JO','JP','KE','KG','KH','KI','KM','KN','KP','KR','KW','KY','KZ','LA','LB','LC','LI','LK','LR','LS','LT','LU','LV','LY','MA','MC','MD','ME','MF','MG','MH','MK','ML','MM','MN','MO','MP','MQ','MR','MS','MT','MU','MV','MW','MX','MY','MZ','NA','NC','NE','NF','NG','NI','NL','NO','NP','NR','NU','NZ','OM','PA','PE','PF','PG','PH','PK','PL','PM','PN','PR','PS','PT','PW','PY','QA','RE','RO','RS','RU','RW','SA','SB','SC','SD','SE','SG','SH','SI','SJ','SK','SL','SM','SN','SO','SR','SS','ST','SV','SX','SY','SZ','TC','TD','TF','TG','TH','TJ','TK','TL','TM','TN','TO','TR','TT','TV','TW','TZ','UA','UG','UM','US','UY','UZ','VA','VC','VE','VG','VI','VN','VU','WF','WS','YE','YT','ZA','ZM','ZW']
+      
+    Identifiable:
+      type: object
+      properties:
+        id:
+          type: integer
+          
+    Customizable:
+      type: object
+      properties:
+        customfield:
+          type: string
+
+    Timestampable:
+      type: object
+      properties:
+        created: 
+          type: string
+          format: dateTime
+        updated: 
+          type: string
+          format: dateTime
+          
+    Archivable:
+      type: object
+      properties:
+        archived: 
+          type: integer
+          minimum: 0
+          maximum: 1
+    
+    SalesPricable:
+      type: object
+      properties:
+        sales_price:
+          type: number
+          format: double
+          minimum: 0
+        sales_price2:
+          type: number
+          format: double
+          minimum: 0
+        sales_price3:
+          type: number
+          format: double
+          minimum: 0
+        sales_price4:
+          type: number
+          format: double
+          minimum: 0
+        sales_price5:
+          type: number
+          format: double
+          minimum: 0
+    
+        
+    BankAccountable:
+      type: object
+      properties:
+        bank_account_owner:
+          type: string
+        bank_number:
+          type: string
+          pattern: '\d{6,}'
+        bank_name:
+          type: string
+        bank_account_number:
+          type: string
+          pattern: '\d{6,}'
+        bank_swift:
+          type: string
+        bank_iban:
+          type: string
+          minLength: 15
+          maxLength: 32
+          
+    Common:
+      allOf:
+        - $ref: '#/components/schemas/Identifiable'
+        - $ref: '#/components/schemas/Timestampable'
+        - $ref: '#/components/schemas/Customizable'
+        
+    BusinessNumberable:
+      type: object
+      properties:
+        number: 
+          type: integer
+          format: int64
+        number_pro:
+          type: string
+        number_length: 
+          type: integer
+          minimum: 1
+    
+    Quota:
+      type: object
+      xml: 
+        name: quota
+      properties:
+        entity:
+          type: string
+        available:
+          type: integer
+          minimum: -1
+        used:
+          type: integer
+          minimum: 0
+        
+    Client:
+      description: Client object
+      xml:
+        name: client
+      allOf:
+        - $ref: '#/components/schemas/Common'
+        - $ref: '#/components/schemas/BankAccountable'
+        - $ref: '#/components/schemas/Archivable'
+        - $ref: '#/components/schemas/BusinessNumberable'
+        - type: object
+          properties:
+            client_number:
+              type: integer
+            name:
+              type: string
+            salutation: 
+              type: string
+            first_name:
+              type: string
+            last_name: 
+              type: string
+            street: 
+              type: string
+            zip:
+              type: string
+            city: 
+              type: string
+            state: 
+              type: string
+            country_code:
+              type: string
+            address:
+              type: string
+            phone:
+              type: string
+            fax:
+              type: string
+            mobile:
+              type: string
+            email:
+              type: string
+              format: email
+            www:
+              type: string
+            tax_number:
+              type: string
+            vat_number:
+              type: string
+            currency_code:
+              $ref: '#/components/schemas/CurrencyCodeType'
+            plan:
+              type: string
+            quotas:
+              type: object
+              properties:
+                quota:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Quota'
+              xml: 
+                wrapped: true
+                name: quotas
+            client-property-values:
+              nullable: true
+            
+    Article:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Common'
+        - $ref: '#/components/schemas/BusinessNumberable'
+        - $ref: '#/components/schemas/SalesPricable'
+        - type: object
+          properties:
+            unit_id:
+              type: integer
+              format: int64
+            article_number:
+              type: string
+            number:
+              type: integer
+              format: int64
+            type:
+              type: string
+              enum: ['PRODUCT', 'SERVICE']
+            title:
+              type: string
+            description:
+              type: string
+            currency_code:
+              $ref: '#/components/schemas/CurrencyCodeType'
+
+
+
+
+
+# -------------------- SECURITY 
+security:
+  - authGet: []
+  - authHeader: []
+
+
+
+# -------------------- TAGS 
+tags:
+  - name: Client
+    externalDocs: 
+      url: 'https://www.billomat.com/api/clients/'
+  - name: Article
+    externalDocs:
+      url: 'https://www.billomat.com/api/artikel/'
+
+
+# -------------------- EXTERNALDOCS 
+externalDocs:
+  description: Billing- & Accounting API
+  url: https://www.billomat.com/en/api/
