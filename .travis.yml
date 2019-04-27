@@ -1,0 +1,19 @@
+language: node_js
+
+before_script:
+  - npm install -g gulp-cli
+  - npm install
+
+script: npm install 
+
+stages:
+    - test
+    - build
+jobs:
+  include:
+    - stage: test
+      name: "Validate OpenAPI"
+      script: gulp validate
+    - stage: build
+      name: "Build"
+      script: gulp build

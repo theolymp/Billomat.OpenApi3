@@ -309,4 +309,5 @@ const validateYaml = function(){
 
 exports.build = processYaml;
 exports.default = series(processYaml, validateYaml);
+exports.validate = validateYaml;
 exports.watch = () => watch(['./src/**/*.yaml'], series(processYaml, validateYaml));
