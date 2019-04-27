@@ -20,6 +20,7 @@
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "gulp": "^4.0.1",
+    "gulp-cli": "^2.2.0",
     "gulp-yaml-include": "^0.3.0",
     "openapi-schema-validator": "^3.0.3",
     "prop-types": "^15.7.2",
