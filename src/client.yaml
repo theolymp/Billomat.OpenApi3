@@ -40,7 +40,8 @@ externalDocs:
 
 paths: !!reflectDirStructure {path: 'swagger/paths', replacements: {
   '[+](.*)': '/$1',
-  '~(.*)': '{$1}'
+  '~(.*)': '{$1}',
+  '_index': null
 }}
 components: !!reflectDirStructure {path: 'swagger/components'}
 x-extensions: !!reflectDirStructure {path: 'swagger/extensions'}

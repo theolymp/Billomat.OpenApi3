@@ -1,4 +1,5 @@
 import OpenAPISchemaValidator from 'openapi-schema-validator';
+import { number } from 'prop-types';
 
 const through = require("through2"),
     yaml = require("js-yaml"),
@@ -156,27 +157,50 @@ function constructReflectDirStructureTag(data) {
         
         var filepath = fullpath + '/' + relPath;
 
-        arrPath.pop();
-        var lastPathSegment = p.basename(filepath, p.extname(filepath));
-        
+       
+  
+        arrPath = arrPath
+        .map((pathSegment, idx, arr) => {
 
-        arrPath.map(p => {
+            // last segment, has extension
+            if((idx + 1) === arr.length){
+                const ext = p.extname(filepath);
+                pathSegment = pathSegment.substr(0, pathSegment.length-ext.length);
+            }
 
-            Object.keys(replacements).forEach(k => {
-               p = p.replace(new RegExp(k, 'gm'), replacements[k]);
+            Object.keys(replacements).forEach((k) => {
+                if(pathSegment === null) return;
+
+                const regexp = new RegExp(k, 'gm');
+                if(replacements[k] === null)
+                {
+                    if(regexp.test(pathSegment))
+                    {
+                        pathSegment = null;
+                    }
+                    return;
+                }
+                
+                pathSegment = pathSegment.replace(regexp, replacements[k]);
             });
 
-            return p;
+            /*
+                @TODO: check why "200" is string key
+            if(/\d+/.test(pathSegment)){
+                pathSegment = parseInt(pathSegment);
+            }*/
+            return pathSegment;
+        })
+        .filter(x => x !== null);
 
-        }).forEach(function(p){
+
+        var lastPathSegment =  arrPath.pop();
+        arrPath.forEach((p) => {
             if(!curObj.hasOwnProperty(p)){
                 curObj[p] = {};
             }
             curObj = curObj[p];                    
         });
-        
-
-        
 
         var dirname = fs.realpathSync(p.dirname(filepath));
         var relDir = dirname.replace(basepath, '');
