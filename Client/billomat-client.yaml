@@ -44,6 +44,7 @@ paths:
       description: >
         List all clients
       parameters: 
+        - !!include common/globalPathParametersList.yaml
         - name: name
           in: query
           required: false
@@ -112,7 +113,6 @@ paths:
               type: string
           style: form
           explode: false
-        !!include  common/globalPathParametersList.yaml
       tags: [Client]
       operationId: getClients
       security: 

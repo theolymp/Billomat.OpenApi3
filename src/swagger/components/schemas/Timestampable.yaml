@@ -1,0 +1,8 @@
+type: object
+properties:
+  created: 
+    type: string
+    format: dateTime
+  updated: 
+    type: string
+    format: dateTime

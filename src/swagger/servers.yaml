@@ -1,0 +1,8 @@
+  - description: the olymp - dev demo
+    url: https://theolympdev01.billomat.net/api
+  - description: Public billomat.net endpoint
+    url: https://{billomatInstance}.billomat.net/api
+    variables:
+      billomatInstance:
+        default: demo
+        description: Your instance ID

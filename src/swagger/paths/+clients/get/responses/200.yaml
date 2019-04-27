@@ -1,0 +1,21 @@
+description:
+  List of clients
+content:
+  'application/xml':
+    schema:
+      description: List of clients
+      type: array
+      xml: 
+        name: clients
+        wrapped: true
+      items:
+        $ref: '#/components/schemas/Client'
+  'application/json':
+    schema:
+      description: List of clients
+      type: object
+      properties:
+        clients:
+          type: array
+          items:
+            $ref: '#/components/schemas/Client'

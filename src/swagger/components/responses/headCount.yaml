@@ -1,0 +1,9 @@
+description: HEAD request gives total item count
+headers:
+  count:
+    description: Total count
+    required: true
+    style: simple
+    schema:
+      type: integer
+      minimum: 0

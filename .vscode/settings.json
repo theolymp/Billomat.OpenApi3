@@ -1,5 +1,14 @@
 {
-    "yaml.trace.server": "messages",
     "yaml.format.singleQuote": true,
-    "yaml.customTags": ["!!include", "tag:yaml.org,2002:include"]
+    "yaml.customTags": [
+        "tag:yaml.org,2002:include",
+        "tag:yaml.org,2002:flatten",
+        "tag:yaml.org,2002:reflectDirStructure mapping"        
+    ],
+    "editor.tabSize": 2,
+    "[yaml]": {
+        "editor.tabSize": 2
+    },
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true
 }

@@ -1,0 +1,10 @@
+    authHeader:
+      type: apiKey
+      description: ApiKey in HTTP-header
+      name: X-BillomatApiKey
+      in: header
+    authGet:
+      type: apiKey
+      description: ApiKey in HTTP-header
+      name: api_key
+      in: query

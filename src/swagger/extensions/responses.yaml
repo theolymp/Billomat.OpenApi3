@@ -1,0 +1,3 @@
+DefaultResponseIsError: &DefaultResponseIsError
+  'default':
+      $ref: '#/components/responses/error'

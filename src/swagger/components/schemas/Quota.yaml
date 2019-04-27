@@ -1,0 +1,12 @@
+type: object
+xml: 
+  name: quota
+properties:
+  entity:
+    type: string
+  available:
+    type: integer
+    minimum: -1
+  used:
+    type: integer
+    minimum: 0

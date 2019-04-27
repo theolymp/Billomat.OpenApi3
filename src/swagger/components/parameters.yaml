@@ -1,0 +1,73 @@
+language:
+  in: header
+  name: Accept-Language
+  required: false
+  schema:
+    $ref: '#/components/schemas/LanguageCodeType'
+  description: Language
+formatHeader:
+  in: header
+  name: Accept
+  required: false
+  schema: 
+    type: string
+    enum: ['application/json', 'application/xml']
+    default: 'application/json'
+formatQuery:
+  in: query
+  name: format
+  required: false
+  schema:
+    type: string
+    enum: ['json', 'xml']
+    default: json
+page:
+  in: query
+  name: page
+  required: false
+  schema:
+    type: integer
+    minimum: 1
+    default: 1
+  description: Page number
+limitPage:
+  in: query
+  name: per_page
+  required: false
+  schema:
+    type: integer
+    minimum: 1
+    maximum: 1000
+    default: 100
+  description: Items per page
+
+orderBy:
+  in: query
+  name: order_by
+  required: false
+  description: Order by filter
+  schema:
+    type: array
+    items:
+      type: string
+      pattern: '^(\w+ (ASC|DESC))$'
+  style: form
+  explode: false
+  
+  
+appId:
+  in: header
+  name: X-AppId
+  required: false
+  description: App Id
+  schema: 
+    type: integer
+    format: int64
+
+appSecret:
+  in: header
+  name: X-AppSecret
+  required: false
+  description: App Secret
+  schema: 
+    type: string

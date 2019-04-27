@@ -1,0 +1,24 @@
+type: object
+allOf:
+  - $ref: '#/components/schemas/Common'
+  - $ref: '#/components/schemas/BusinessNumberable'
+  - $ref: '#/components/schemas/SalesPricable'
+  - type: object
+    properties:
+      unit_id:
+        type: integer
+        format: int64
+      article_number:
+        type: string
+      number:
+        type: integer
+        format: int64
+      type:
+        type: string
+        enum: ['PRODUCT', 'SERVICE']
+      title:
+        type: string
+      description:
+        type: string
+      currency_code:
+        $ref: '#/components/schemas/CurrencyCodeType'

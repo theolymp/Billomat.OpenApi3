@@ -1,0 +1,23 @@
+type: object
+properties:
+  sales_price:
+    type: number
+    format: double
+    minimum: 0
+  sales_price2:
+    type: number
+    format: double
+    minimum: 0
+  sales_price3:
+    type: number
+    format: double
+    minimum: 0
+  sales_price4:
+    type: number
+    format: double
+    minimum: 0
+  sales_price5:
+    type: number
+    format: double
+    minimum: 0
+    

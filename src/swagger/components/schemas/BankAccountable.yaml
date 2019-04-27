@@ -1,0 +1,18 @@
+type: object
+properties:
+  bank_account_owner:
+    type: string
+  bank_number:
+    type: string
+    pattern: '\d{6,}'
+  bank_name:
+    type: string
+  bank_account_number:
+    type: string
+    pattern: '\d{6,}'
+  bank_swift:
+    type: string
+  bank_iban:
+    type: string
+    minLength: 15
+    maxLength: 32

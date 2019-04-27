@@ -1,0 +1,10 @@
+type: object
+properties:
+  number: 
+    type: integer
+    format: int64
+  number_pro:
+    type: string
+  number_length: 
+    type: integer
+    minimum: 1

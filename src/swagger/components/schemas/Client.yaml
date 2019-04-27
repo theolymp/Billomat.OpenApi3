@@ -1,0 +1,63 @@
+description: Client object
+xml:
+  name: client
+allOf:
+  - $ref: '#/components/schemas/Common'
+  - $ref: '#/components/schemas/BankAccountable'
+  - $ref: '#/components/schemas/Archivable'
+  - $ref: '#/components/schemas/BusinessNumberable'
+  - type: object
+    properties:
+      client_number:
+        type: integer
+      name:
+        type: string
+      salutation: 
+        type: string
+      first_name:
+        type: string
+      last_name: 
+        type: string
+      street: 
+        type: string
+      zip:
+        type: string
+      city: 
+        type: string
+      state: 
+        type: string
+      country_code:
+        type: string
+      address:
+        type: string
+      phone:
+        type: string
+      fax:
+        type: string
+      mobile:
+        type: string
+      email:
+        type: string
+        format: email
+      www:
+        type: string
+      tax_number:
+        type: string
+      vat_number:
+        type: string
+      currency_code:
+        $ref: '#/components/schemas/CurrencyCodeType'
+      plan:
+        type: string
+      quotas:
+        type: object
+        properties:
+          quota:
+            type: array
+            items:
+              $ref: '#/components/schemas/Quota'
+        xml: 
+          wrapped: true
+          name: quotas
+      client-property-values:
+        nullable: true

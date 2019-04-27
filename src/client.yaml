@@ -1,0 +1,46 @@
+openapi: '3.0.0'
+info:
+  title: 'Billomat Billing-& Accounting API'
+  description: >-
+    The billomat[API] is an open data and programming interface which enables you to access the data in your Billomat account via HTTP and XML/JSON. With this, online and desktop applications can be created which seamlessly integrate into your Billomat account
+  termsOfService: https://www.billomat.com/en/terms/
+  contact:
+    name: the olymp - technology & compliance consulting
+    url: https://www.theolymp.net
+    email: info@theolymp.net
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: '1'
+
+
+
+
+servers: !!include 'swagger/servers.yaml'
+
+
+security:
+  - authGet: []
+  - authHeader: []
+
+tags:
+  - name: Client
+    externalDocs: 
+      url: 'https://www.billomat.com/api/clients/'
+  - name: Article
+    externalDocs:
+      url: 'https://www.billomat.com/api/artikel/'
+
+
+# -------------------- EXTERNALDOCS 
+externalDocs:
+  description: Billing- & Accounting API
+  url: https://www.billomat.com/en/api/
+
+
+paths: !!reflectDirStructure {path: 'swagger/paths', replacements: {
+  '[+](.*)': '/$1',
+  '~(.*)': '{$1}'
+}}
+components: !!reflectDirStructure {path: 'swagger/components'}
+x-extensions: !!reflectDirStructure {path: 'swagger/extensions'}

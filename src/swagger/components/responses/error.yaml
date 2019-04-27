@@ -1,0 +1,11 @@
+description: Error
+content:
+  'application/xml':
+    schema:
+      type: object
+      xml:
+          name: errors
+          wrapped: true
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'

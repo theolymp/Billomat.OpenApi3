@@ -1,0 +1,68 @@
+!!include ../../../common/globalPathParametersList.yaml
+---
+- name: name
+  in: query
+  required: false
+  description: The list can be filtered with Company name
+  schema: 
+    type: string
+- name: client_number
+  in: query        
+  required: false
+  description: The list can be filtered with Client number
+  schema: 
+    type: integer
+    format: int64
+- name: email
+  in: query        
+  required: false
+  description: The list can be filtered with e-mail address
+  schema: 
+    type: string
+    format: email
+- name: first_name
+  in: query        
+  required: false
+  description: The list can be filtered with First name of the contact person
+  schema: 
+    type: string
+- name: last_name
+  in: query        
+  required: false
+  description: The list can be filtered with Last name of the contact person
+  schema: 
+    type: string
+- name: country_code
+  in: query        
+  required: false
+  description: The list can be filtered with Last name of the contact person
+  schema: 
+    $ref: '#/components/schemas/CountryCodeType'
+- name: note
+  in: query        
+  required: false
+  description: The list can be filtered with note
+  schema: 
+    type: string
+- name: invoice_id
+  in: query
+  description: >
+    The list can be filtered with ID of an invoice of this client, 
+    multiple values seperated with commas
+  schema: 
+    type: array
+    items:
+      type: integer
+      format: int64
+  style: form
+  explode: false
+- name: tags
+  in: query        
+  required: false
+  description: The list can be filtered with Comma seperated list of tags
+  schema: 
+    type: array
+    items:
+      type: string
+  style: form
+  explode: false

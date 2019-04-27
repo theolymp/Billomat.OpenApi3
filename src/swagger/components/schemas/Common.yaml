@@ -1,0 +1,4 @@
+allOf:
+  - $ref: '#/components/schemas/Identifiable'
+  - $ref: '#/components/schemas/Timestampable'
+  - $ref: '#/components/schemas/Customizable'
